@@ -20,8 +20,12 @@ body{
 }
 
 .logo {
+    display: flex;
+
     padding-top: 48px;
-    text-align: left;
+    
+    justify-content: center;
+    align-items: center;
 }
 
 .container{

@@ -67,8 +67,10 @@ class MyCrud {
     }
 
     delete(i) {
-        //Remove o objeto de posição i da lista
-        //TODO Você deve implementar.
+        if (i >= 0 && i < this._table.length) {
+            this._table.splice(i, 1); 
+            localStorage.setItem("tableCrud", JSON.stringify(this._table));
+        }
     }
 
 }
