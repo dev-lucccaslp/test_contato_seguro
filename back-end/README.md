@@ -57,7 +57,7 @@ Para a listagem de produtos:
 - [x] Gostaria de poder ordenar os produtos por data de cadastro.
 
 ### Relatório
-- [ ] O relatório não está mostrando a coluna de logs corretamente, se possível, gostaria de trazer no seguinte formato:
+- [x] O relatório não está mostrando a coluna de logs corretamente, se possível, gostaria de trazer no seguinte formato:
   (Nome do usuário, Tipo de alteração e Data),
   (Nome do usuário, Tipo de alteração e Data),
   (Nome do usuário, Tipo de alteração e Data)

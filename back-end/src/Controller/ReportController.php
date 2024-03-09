@@ -35,21 +35,48 @@ class ReportController
         
         $stm = $this->productService->getAll($adminUserId);
         $products = $stm->fetchAll();
-
+    
         foreach ($products as $i => $product) {
             $stm = $this->companyService->getNameById($product->company_id);
             $companyName = $stm->fetch()->name;
-
-            $stm = $this->productService->getLog($product->id);
+    
+            $action = isset($queryParams['action']) ? $queryParams['action'] : null;
+    
+            $stm = $this->productService->getLog($product->id, $adminUserId, $action);
             $productLogs = $stm->fetchAll();
             
+
+            $formattedLogs = [];
+            foreach ($productLogs as $log) {
+                $translatedAction = '';
+                switch ($log->action) {
+                    case 'create':
+                        $translatedAction = 'Criação';
+                        break;
+                    case 'update':
+                        $translatedAction = 'Atualização';
+                        break;
+                    case 'delete':
+                        $translatedAction = 'Remoção';
+                        break;
+                    default:
+                        $translatedAction = '*';
+                }
+            
+                $formattedTimestamp = date('d/m/Y H:i:s', strtotime($log->timestamp));
+            
+                $formattedLogs[] = "(Usuário: {$log->user_name}, {$translatedAction}, {$formattedTimestamp})";
+            }
+
+            $created_at = date('d/m/Y', strtotime($product->created_at));
+    
             $data[$i+1][] = $product->id;
             $data[$i+1][] = $companyName;
             $data[$i+1][] = $product->title;
             $data[$i+1][] = $product->price;
             $data[$i+1][] = $product->category;
-            $data[$i+1][] = $product->created_at;
-            $data[$i+1][] = $productLogs;
+            $data[$i+1][] = $created_at;
+            $data[$i+1][] = implode(', ', $formattedLogs); 
         }
         
         $report = "<table style='font-size: 10px;'>";
