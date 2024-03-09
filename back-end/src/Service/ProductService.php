@@ -185,17 +185,41 @@ class ProductService
         return $stm->execute();
     }
 
-    public function getLog($id)
-    {
-        $stm = $this->pdo->prepare("
-            SELECT *
-            FROM product_log
-            WHERE product_id = {$id}
-        ");
-        $stm->execute();
+    // public function getLog($id)
+    // {
+    //     $stm = $this->pdo->prepare("
+    //         SELECT *
+    //         FROM product_log
+    //         WHERE product_id = {$id}
+    //         ORDER BY timestamp DESC
+    //     ");
+    //     $stm->execute();
 
+    //     return $stm;
+    // }
+
+    public function getLog($idProduct, $adminUserId ,$action = null)
+    {
+        $query = "
+            SELECT pl.*, au.name AS user_name
+            FROM product_log pl
+            INNER JOIN admin_user au ON pl.admin_user_id = au.id
+            WHERE pl.product_id = {$idProduct} 
+            AND pl.admin_user_id = {$adminUserId}
+        ";
+    
+        if ($action !== null) {
+            $query .= " AND pl.action = '{$action}'";
+        }
+    
+        $query .= " ORDER BY pl.timestamp DESC";
+    
+        $stm = $this->pdo->prepare($query);
+        $stm->execute();
+    
         return $stm;
     }
+    
 
     public function getOneproductCategory($productId)
     {

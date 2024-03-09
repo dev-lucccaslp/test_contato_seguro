@@ -67,7 +67,7 @@ Para a listagem de produtos:
   (Joe Doe, Remoção, 21/12/2023 14:52:50)
 
 ### Logs
-- [ ] Gostaria de saber qual usuário mudou o preço do produto `iphone 8` por último.
+- [x] Gostaria de saber qual usuário mudou o preço do produto `iphone 8` por último.
 
 ### Extra
 - [ ] Aqui fica um desafio extra **opcional**: _criar um ambiente com_ Docker _para a api_.

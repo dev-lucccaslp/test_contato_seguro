@@ -35,8 +35,7 @@ class ProductController
 
         } catch (\Exception $e) {
             $response->getBody()->write(json_encode(["menssage" => "Erro interno, não foi possível encontrar os produtos."]));
-            // Tratar erro adequadamente (por exemplo, logar o erro)
-            return $response->withStatus(500); // Ou o
+            return $response->withStatus(500); 
         }
     }
     
@@ -51,8 +50,7 @@ class ProductController
             return $response->withStatus(200);
         } catch (\Exception $e) {
             $response->getBody()->write(json_encode(["menssage" => "Insira um id correto"]));
-            // Tratar erro adequadamente (por exemplo, logar o erro)
-            return $response->withStatus(500); // Ou o
+            return $response->withStatus(500); 
         }
     }
 
@@ -70,7 +68,7 @@ class ProductController
 
         } catch (\Exception $e) {
             $response->getBody()->write(json_encode(["menssage" => "Erro interno, não foi possível criar seu produto."]));
-            return $response->withStatus(500); // Ou o
+            return $response->withStatus(500); 
         }
         
     }
@@ -81,6 +79,10 @@ class ProductController
             $body = $request->getParsedBody();
             $adminUserId = $request->getHeader('admin_user_id')[0];
 
+            if (isset($body['price'])) {
+                $this->service->logPriceUpdate($productId, $adminUserId);
+            }
+
             if ($this->service->updateOne($args['id'], $body, $adminUserId)) {
                 return $response->withStatus(200);
             } else {
@@ -88,7 +90,7 @@ class ProductController
             }
         } catch (\Exception $e) {
             $response->getBody()->write(json_encode(["menssage" => "Erro interno, não foi possível atualizar produto."]));
-            return $response->withStatus(500); // Ou o
+            return $response->withStatus(500); 
         }
     }
 
@@ -103,8 +105,27 @@ class ProductController
             }
         } catch (\Exception $e) {
             $response->getBody()->write(json_encode(["menssage" => "Erro interno, não foi possível excluir o produto."]));
-            // Tratar erro adequadamente (por exemplo, logar o erro)
-            return $response->withStatus(500); // Ou o
+            return $response->withStatus(500);
+        }
+    }
+
+    public function getLog(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
+    {
+        try{
+            $adminUserId = $request->getHeader('admin_user_id')[0];
+            $idProduct = $args['id'];
+            $queryParams = $request->getQueryParams();
+
+
+            $action = isset($queryParams['action']) ? $queryParams['action'] : null;
+
+            $stm = $this->service->getLog($idProduct, $adminUserId, $action);
+            $response->getBody()->write(json_encode($stm->fetchAll()));
+            return $response->withStatus(200);
+
+        } catch (\Exception $e) {
+            $response->getBody()->write(json_encode(["menssage" => "Erro interno, não foi encontrar id do seu produto."]));
+            return $response->withStatus(500); 
         }
     }
 }
