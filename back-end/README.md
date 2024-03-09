@@ -81,4 +81,5 @@ Sinta-se a vontade para refatorar o que achar pertinente, considerando questões
 Boa sorte! :)
 
 ## Suas Respostas, Duvidas e Observações
-[Adicione  aqui suas respostas, dúvidas e observações]
+Foi criado uma rota /log dentro de "products", para poder validarmos id do produto, quando foi criado e editado.
+
