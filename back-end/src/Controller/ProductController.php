@@ -29,17 +29,17 @@ class ProductController
     }
 
     public function getOne(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
-    {
-        $stm = $this->service->getOne($args['id']);
-        $product = Product::hydrateByFetch($stm->fetch());
+    { try {
+        $idUser = $args['id'];
 
-        $adminUserId = $request->getHeader('admin_user_id')[0];
-        $productCategory = $this->categoryService->getProductCategory($product->id)->fetch();
-        $fetchedCategory = $this->categoryService->getOne($adminUserId, $productCategory->id)->fetch();
-        $product->setCategory($fetchedCategory->title);
-
-        $response->getBody()->write(json_encode($product));
+        $stm = $this->service->getCategoryToIdProduct($idUser);
+        $response->getBody()->write(json_encode($stm->fetchAll()));
         return $response->withStatus(200);
+    } catch (\Exception $e) {
+        $response->getBody()->write(json_encode(["menssage" => "Insira um id correto"]));
+        // Tratar erro adequadamente (por exemplo, logar o erro)
+        return $response->withStatus(500); // Ou o
+    }
     }
 
     public function insertOne(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface

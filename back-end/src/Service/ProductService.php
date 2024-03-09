@@ -29,6 +29,23 @@ class ProductService
         return $stm;
     }
 
+    public function getCategoryToIdProduct($productId)
+    {
+        $query = "
+            SELECT p.*, c.title as category
+            FROM product p
+            INNER JOIN product_category pc ON pc.product_id = p.id
+            INNER JOIN category c ON c.id = pc.cat_id
+            WHERE p.id = {$productId}
+        ";
+
+        $stm = $this->pdo->prepare($query);
+
+        $stm->execute();
+
+        return $stm;
+    }
+
     public function getOne($id)
     {
         $stm = $this->pdo->prepare("
@@ -161,5 +178,18 @@ class ProductService
         $stm->execute();
 
         return $stm;
+    }
+
+    public function getOneproductCategory($productId)
+    {
+
+        $stm = $this->pdo->prepare( "
+        SELECT p.*, c.title as category
+        FROM product p
+        WHERE  p.id =  {$productId}
+    ");
+        $stm->execute();
+
+        return $query;
     }
 }

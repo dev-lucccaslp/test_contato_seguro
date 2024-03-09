@@ -29,18 +29,19 @@ class CategoryService
         return $stm;
     }
 
-    public function getOne($adminUserId, $categoryId)
+    public function getOne( $productId)
     {
+
         $query = "
-            SELECT *
-            FROM category c
-            WHERE c.active = 1
-            AND c.company_id = {$this->getCompanyFromAdminUser($adminUserId)}
-            AND c.id = {$categoryId}
-        ";
+        SELECT p.*, c.title as category
+        FROM product p
+        INNER JOIN product_category pc ON pc.product_id = p.id
+        INNER JOIN category c ON c.id = pc.category_id
+        WHERE  p.id =  {$productId}
+    ";
+
 
         $stm = $this->pdo->prepare($query);
-
         $stm->execute();
 
         return $stm;
