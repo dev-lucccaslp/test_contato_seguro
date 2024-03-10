@@ -139,6 +139,10 @@ class View {
         b.appendChild(span);
         div.appendChild(b);
         tbl.parentNode.insertBefore(div, tbl);
+
+        setTimeout(function() {
+            div.remove();
+        }, 5000);
     }
 
     list(tbl, start = 0, field = null, search = "") {
@@ -246,7 +250,7 @@ class View {
         return true;
     }
 
-
+ 
     delete(btn) {
         //Usa o indice atribuido ao value do botão para deletar aquele objeto.
         this.crud.delete(btn.getAttribute("value"));
