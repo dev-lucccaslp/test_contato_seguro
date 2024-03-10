@@ -15,4 +15,3 @@ Além disso, você deve implementar o método de remoção (localizado na classe
 Serão avaliadas suas capacidades de leitura de código e resolução de problemas. Não se preocupe caso não consiga terminar tudo, nos envie o teste mesmo assim, destacando, logo abaixo, suas principais dificuldades e como fez para resolver os problemas.
 
 # Resposta do participante
-_Responda aqui quais foram suas dificuldades e como fez para encontrar e resolver os problemas ao enviar a solução_

@@ -59,9 +59,8 @@ class MyCrud {
     }
 
     update(i, map = {}) {
-        //Substitui os valores do objeto pelos campos correspondentes aos de map
         for (let key in map) {
-            this._table[i][key] = key;
+            this._table[i][key] = map[key];
         }
         localStorage.setItem("tableCrud", JSON.stringify(this._table));
     }
@@ -83,18 +82,17 @@ class View {
     }
 
     create(form) {
-        //Cria o objeto e retorna false se os campos necessários
-        //não foram preenchidos, senão retorna true
         let reg = {};
         for (let inp of form) {
-            //Teste de campos obrigatorios
             if (inp.hasAttribute("required") && MyCrud.isEmpty(inp)) {
                 return false;
             }
-            //Insere informações no objeto
             if (!(inp.getAttribute("type") == "submit" || inp.getAttribute("type") == "reset")) {
                 reg[inp.getAttribute("name")] = inp.value;
             }
+        }
+        if (!reg.nome || !reg.email) { // Adicionando validação para nome e email
+            return false;
         }
         this.crud.create(reg);
         window.dispatchEvent(new Event("load"));
